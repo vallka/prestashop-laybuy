@@ -168,7 +168,7 @@ class LaybuyCheckout
             'id'          => 'item_for_order___#' . $this->cart->id,
             'description' => 'Items',
             'quantity'    => 1,
-            'price'       => $this->cart->getOrderTotal(false, Cart::BOTH)
+            'price'       => $this->cart->getOrderTotal(false, Cart::BOTH_WITHOUT_SHIPPING)
         ];
 
         return $items;
