@@ -109,7 +109,6 @@ class LaybuyCheckout
     * since 1.0.0
     */
     private function _constructPayload() {
-
         $this->payload = [
             'amount'    => $this->cart->getOrderTotal(),
             'returnUrl' => $this->getRedirectConfirmUrl(),
@@ -142,7 +141,7 @@ class LaybuyCheckout
         $tax = floatval($this->cart->getOrderTotal() - $this->cart->getOrderTotal(false));
 
         // items total
-        $shipping_total = $this->cart->getOrderTotal(true, Cart::ONLY_SHIPPING);
+        $shipping_total = $this->cart->getOrderTotal(false, Cart::ONLY_SHIPPING);
 
         // shipping
         if ($shipping_total > 0) {
