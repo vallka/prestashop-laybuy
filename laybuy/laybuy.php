@@ -47,10 +47,11 @@ class Laybuy extends PaymentModule
     protected $pay_over_time_limit_max = [
         'NZD' => 1500,
         'AUD' => 1200,
-        'GBP' => 720
+        'GBP' => 720,
+        'USD' => 1200
     ];
 
-    protected $supported_currencies = ['AUD', 'NZD', 'GBP'];
+    protected $supported_currencies = ['AUD', 'NZD', 'GBP', 'USD'];
 
     /**
      * Constructor function
@@ -61,7 +62,7 @@ class Laybuy extends PaymentModule
     {
         $this->name = 'laybuy';
         $this->tab = 'payments_gateways';
-        $this->version = '1.0.1';
+        $this->version = '1.0.3';
         $this->ps_versions_compliancy = array('min' => '1.7', 'max' => _PS_VERSION_);
         $this->author = 'Laybuy';
         $this->controllers = array('validation', 'return');
@@ -223,10 +224,17 @@ class Laybuy extends PaymentModule
         $laybuy_production_aud_merchant_id = strval(Tools::getValue('LAYBUY_PRODUCTION_AUD_MERCHANT_ID'));
         $laybuy_production_aud_api_key     = strval(Tools::getValue('LAYBUY_PRODUCTION_AUD_API_KEY'));
 
+        // gbp
         $laybuy_sandbox_gbp_merchant_id    = strval(Tools::getValue('LAYBUY_SANDBOX_GBP_MERCHANT_ID'));
         $laybuy_sandbox_gbp_api_key        = strval(Tools::getValue('LAYBUY_SANDBOX_GBP_API_KEY'));
         $laybuy_production_gbp_merchant_id = strval(Tools::getValue('LAYBUY_PRODUCTION_GBP_MERCHANT_ID'));
         $laybuy_production_gbp_api_key     = strval(Tools::getValue('LAYBUY_PRODUCTION_GBP_API_KEY'));
+
+        // usd
+        $laybuy_sandbox_usd_merchant_id    = strval(Tools::getValue('LAYBUY_SANDBOX_USD_MERCHANT_ID'));
+        $laybuy_sandbox_usd_api_key        = strval(Tools::getValue('LAYBUY_SANDBOX_USD_API_KEY'));
+        $laybuy_production_usd_merchant_id = strval(Tools::getValue('LAYBUY_PRODUCTION_USD_MERCHANT_ID'));
+        $laybuy_production_usd_api_key     = strval(Tools::getValue('LAYBUY_PRODUCTION_USD_API_KEY'));
 
         $laybuy_sandbox_global_merchant_id    = strval(Tools::getValue('LAYBUY_SANDBOX_GLOBAL_MERCHANT_ID'));
         $laybuy_sandbox_global_api_key        = strval(Tools::getValue('LAYBUY_SANDBOX_GLOBAL_API_KEY'));
@@ -256,6 +264,11 @@ class Laybuy extends PaymentModule
         Configuration::updateValue('LAYBUY_SANDBOX_GBP_API_KEY', $laybuy_sandbox_gbp_api_key);
         Configuration::updateValue('LAYBUY_PRODUCTION_GBP_MERCHANT_ID', $laybuy_production_gbp_merchant_id);
         Configuration::updateValue('LAYBUY_PRODUCTION_GBP_API_KEY', $laybuy_production_gbp_api_key);
+
+        Configuration::updateValue('LAYBUY_SANDBOX_USD_MERCHANT_ID', $laybuy_sandbox_usd_merchant_id);
+        Configuration::updateValue('LAYBUY_SANDBOX_USD_API_KEY', $laybuy_sandbox_usd_api_key);
+        Configuration::updateValue('LAYBUY_PRODUCTION_USD_MERCHANT_ID', $laybuy_production_usd_merchant_id);
+        Configuration::updateValue('LAYBUY_PRODUCTION_USD_API_KEY', $laybuy_production_usd_api_key);
 
         Configuration::updateValue('LAYBUY_SANDBOX_GLOBAL_MERCHANT_ID', $laybuy_sandbox_global_merchant_id);
         Configuration::updateValue('LAYBUY_SANDBOX_GLOBAL_API_KEY', $laybuy_sandbox_global_api_key);
@@ -339,6 +352,9 @@ class Laybuy extends PaymentModule
                             ),
                             array(
                                 'laybuy_currency' => 'GBP'
+                            ),
+                            array(
+                                'laybuy_currency' => 'USD'
                             )
                         ),
                         'id'    => 'laybuy_currency',
@@ -475,6 +491,38 @@ class Laybuy extends PaymentModule
                     'required'  =>  false
                 ),
 
+                // USD Sandbox
+                array(
+                    'type'      =>  'text',
+                    'name'      =>  'LAYBUY_SANDBOX_USD_MERCHANT_ID',
+                    'label'     =>  $this->l('USD Merchant ID (sandbox)'),
+                    'size'      =>  5,
+                    'required'  =>  false
+                ),
+                array(
+                    'type'      =>  'text',
+                    'name'      =>  'LAYBUY_SANDBOX_USD_API_KEY',
+                    'label'     =>  $this->l('USD API Key (sandbox)'),
+                    'size'      =>  5,
+                    'required'  =>  false
+                ),
+
+                // USD Production
+                array(
+                    'type'      =>  'text',
+                    'name'      =>  'LAYBUY_PRODUCTION_USD_MERCHANT_ID',
+                    'label'     =>  $this->l('USD Merchant ID (production)'),
+                    'size'      =>  5,
+                    'required'  =>  false
+                ),
+                array(
+                    'type'      =>  'text',
+                    'name'      =>  'LAYBUY_PRODUCTION_USD_API_KEY',
+                    'label'     =>  $this->l('USD API Key (production)'),
+                    'size'      =>  5,
+                    'required'  =>  false
+                ),
+
                 array(
                     'type'      =>  'select',
                     'label'     =>  $this->l('API Environment'),
@@ -570,6 +618,11 @@ class Laybuy extends PaymentModule
         $helper->fields_value['LAYBUY_SANDBOX_GBP_API_KEY']         = Configuration::get('LAYBUY_SANDBOX_GBP_API_KEY');
         $helper->fields_value['LAYBUY_PRODUCTION_GBP_MERCHANT_ID']  = Configuration::get('LAYBUY_PRODUCTION_GBP_MERCHANT_ID');
         $helper->fields_value['LAYBUY_PRODUCTION_GBP_API_KEY']      = Configuration::get('LAYBUY_PRODUCTION_GBP_API_KEY');
+
+        $helper->fields_value['LAYBUY_SANDBOX_USD_MERCHANT_ID']     = Configuration::get('LAYBUY_SANDBOX_USD_MERCHANT_ID');
+        $helper->fields_value['LAYBUY_SANDBOX_USD_API_KEY']         = Configuration::get('LAYBUY_SANDBOX_USD_API_KEY');
+        $helper->fields_value['LAYBUY_PRODUCTION_USD_MERCHANT_ID']  = Configuration::get('LAYBUY_PRODUCTION_USD_MERCHANT_ID');
+        $helper->fields_value['LAYBUY_PRODUCTION_USD_API_KEY']      = Configuration::get('LAYBUY_PRODUCTION_USD_API_KEY');
 
         $helper->fields_value['LAYBUY_SANDBOX_GLOBAL_MERCHANT_ID']    = Configuration::get('LAYBUY_SANDBOX_GLOBAL_MERCHANT_ID');
         $helper->fields_value['LAYBUY_SANDBOX_GLOBAL_API_KEY']        = Configuration::get('LAYBUY_SANDBOX_GLOBAL_API_KEY');

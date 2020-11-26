@@ -33,6 +33,12 @@ class LaybuyConfig implements ArrayAccess
             'LAYBUY_PRODUCTION_GBP_MERCHANT_ID',
             'LAYBUY_PRODUCTION_GBP_API_KEY',
 
+            // USD
+            'LAYBUY_SANDBOX_USD_MERCHANT_ID',
+            'LAYBUY_SANDBOX_USD_API_KEY',
+            'LAYBUY_PRODUCTION_USD_MERCHANT_ID',
+            'LAYBUY_PRODUCTION_USD_API_KEY',
+
             // GLOBAL
             'LAYBUY_SANDBOX_GLOBAL_MERCHANT_ID',
             'LAYBUY_SANDBOX_GLOBAL_API_KEY',

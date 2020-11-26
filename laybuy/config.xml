@@ -2,7 +2,7 @@
 <module>
     <name>laybuy</name>
     <displayName><![CDATA[Laybuy Payment Gateway]]></displayName>
-    <version><![CDATA[1.0.1]]></version>
+    <version><![CDATA[1.0.3]]></version>
     <description><![CDATA[This is a payment gateway module for Laybuy]]></description>
     <author><![CDATA[Laybuy]]></author>
     <tab><![CDATA[payments_gateways]]></tab>
