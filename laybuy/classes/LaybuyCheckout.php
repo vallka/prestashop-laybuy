@@ -143,6 +143,21 @@ class LaybuyCheckout
         // items total
         $shipping_total = $this->cart->getOrderTotal(false, Cart::ONLY_SHIPPING);
 
+        //vallka:
+        $items_price = $this->cart->getOrderTotal(false, Cart::BOTH_WITHOUT_SHIPPING);
+        $amount = $this->cart->getOrderTotal();
+
+        if (Laybuy::$debug) {
+            PrestaShopLogger::addLog("laybuy-vallka:$amount,$items_price,$tax,$shipping_total", 3, NULL, "Laybuy", 1);
+        }
+
+        if ($items_price+$tax == $amount) {
+            $shipping_total = 0;
+            PrestaShopLogger::addLog("laybuy-vallka-corrected!:$amount,$items_price,$tax,$shipping_total", 3, NULL, "Laybuy", 1);
+        }
+        //vallka end
+
+
         // shipping
         if ($shipping_total > 0) {
             $items[] = array(
